@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Image Scanning animation */
+.scanning::after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 5px;
+  height: 100%;
+  background-image: linear-gradient(
+    to right,
+    rgba(19, 161, 14, 0.2),
+    /* Darker matrix green with full transparency */ rgba(19, 161, 14, 0.8)
+      /* The same green with 80% opacity */
+  );
+  animation: scanning 3s ease-in-out infinite;
+}
+
+@keyframes scanning {
+  0%,
+  100% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(340px);
+  }
+}
+
+@layer base {
+  :root {
+    /* Mono light theme — Notion/Figma-style minimalist */
+    --background: 0 0% 98%;            /* #FAFAFA */
+    --foreground: 240 6% 10%;          /* #18181B near-black */
+
+    --card: 0 0% 100%;                 /* #FFFFFF */
+    --card-foreground: 240 6% 10%;     /* #18181B */
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 6% 10%;
+
+    --primary: 240 6% 10%;             /* #18181B */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 5% 96%;           /* #F4F4F5 zinc-100 */
+    --secondary-foreground: 240 6% 10%;
+
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;    /* #71717A zinc-500 */
+
+    --accent: 240 5% 96%;
+    --accent-foreground: 240 6% 10%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 6% 90%;              /* #E4E4E7 zinc-200 */
+    --input: 240 6% 90%;
+    --ring: 240 6% 10%;                /* #18181B */
+
+    --radius: 0.5rem;
+  }
+  
+  .dark body,
+  body.dark {
+    background-color: black;
+  }
+
+  .dark div[role="presentation"],
+  div[role="presentation"].dark {
+    background-color: #09090b !important;
+  }
+
+  iframe[srcdoc] {
+    background-color: white !important; 
+  }
+
+  .dark {
+    color-scheme: dark;
+
+    /* Mono dark theme */
+    --background: 240 6% 7%;            /* #111114 near-black */
+    --foreground: 0 0% 98%;            /* #FAFAFA */
+
+    --card: 240 5% 10%;                /* #18181B */
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 5% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 6% 10%;
+
+    --secondary: 240 4% 16%;           /* #27272A zinc-800 */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;    /* #A1A1AA zinc-400 */
+
+    --accent: 240 4% 16%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 63% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 4% 16%;              /* #27272A zinc-800 */
+    --input: 240 4% 16%;
+    --ring: 0 0% 98%;
+  }
+}
+
+.sidebar-scrollbar-stable {
+  scrollbar-gutter: stable;
+}
+
+.active-step-shimmer {
+  background: linear-gradient(
+    90deg,
+    #374151 0%,
+    #374151 27%,
+    #6b7280 29%,
+    #f3f4f6 30%,
+    #6b7280 31%,
+    #374151 33%,
+    #374151 67%,
+    #6b7280 69%,
+    #f3f4f6 70%,
+    #6b7280 71%,
+    #374151 73%,
+    #374151 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: searchlight 5.5s linear infinite;
+}
+
+:is(.dark) .active-step-shimmer {
+  background: linear-gradient(
+    90deg,
+    #94a3b8 0%,
+    #94a3b8 27%,
+    #cbd5e1 29%,
+    #ffffff 30%,
+    #cbd5e1 31%,
+    #94a3b8 33%,
+    #94a3b8 67%,
+    #cbd5e1 69%,
+    #ffffff 70%,
+    #cbd5e1 71%,
+    #94a3b8 73%,
+    #94a3b8 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: searchlight 5.5s linear infinite;
+}
+
+/* Working indicator background motion */
+.working-indicator-bg {
+  background: linear-gradient(
+    90deg,
+    #f5f3ff 0%,
+    #ffffff 45%,
+    #ede9fe 55%,
+    #ffffff 100%
+  );
+  background-size: 220% 100%;
+  animation: workingGradientSlide 4s ease-in-out infinite;
+}
+
+:is(.dark) .working-indicator-bg {
+  background: linear-gradient(
+    90deg,
+    rgba(76, 29, 149, 0.2) 0%,
+    rgba(24, 24, 27, 1) 45%,
+    rgba(76, 29, 149, 0.28) 55%,
+    rgba(24, 24, 27, 1) 100%
+  );
+  background-size: 220% 100%;
+}
+
+@keyframes workingGradientSlide {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes searchlight {
+  0% {
+    background-position: 140% center;
+  }
+  100% {
+    background-position: -40% center;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html, body, #root {
+    @apply h-full;
+  }
+  body {
+    @apply bg-background text-foreground m-0;
+  }
+}
