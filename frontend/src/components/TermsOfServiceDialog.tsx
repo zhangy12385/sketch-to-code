@@ -106,7 +106,7 @@ const TermsOfServiceDialog: React.FC<{
             ))}
           </div>
           <div className="text-gray-500 text-xs mt-4 text-center">
-            来自这些机构的设计师和工程师都在使用 Screenshot to Code 更快地构建界面。
+            来自这些机构的设计师和工程师都在使用 Sketch to Code 更快地构建界面。
           </div>
         </div>
       </AlertDialogContent>

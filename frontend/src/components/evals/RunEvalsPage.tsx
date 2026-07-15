@@ -68,7 +68,7 @@ function RunEvalsPage() {
 
   useEffect(() => {
     return () => {
-      document.title = "Screenshot to Code";
+      document.title = "Sketch to Code";
       if (faviconFlashIntervalRef.current !== null) {
         window.clearInterval(faviconFlashIntervalRef.current);
       }
@@ -241,7 +241,7 @@ function RunEvalsPage() {
       setStatusMessage("评测运行失败");
       flashFaviconOnComplete();
       setTimeout(() => {
-        document.title = "Screenshot to Code";
+        document.title = "Sketch to Code";
       }, 5000);
     } finally {
       setIsRunning(false);

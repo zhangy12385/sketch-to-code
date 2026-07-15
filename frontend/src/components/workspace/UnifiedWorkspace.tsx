@@ -62,7 +62,7 @@ export default function UnifiedWorkspace({ onMountTermsDialog }: UnifiedWorkspac
             <HiOutlineSparkles className="h-4 w-4" />
           </div>
           <span className="text-sm font-semibold tracking-tight">
-            Screenshot to Code
+            Sketch to Code
           </span>
         </div>
 

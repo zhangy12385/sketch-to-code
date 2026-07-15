@@ -2,7 +2,7 @@
 
 > 面向开发者的设计稿转代码工具。把截图、手绘稿、Figma、网页录屏变成可运行的 HTML / React / Vue 代码 —— 全部在本地浏览器完成，模型密钥你自己掌控。
 
-![preview](https://github.com/user-attachments/assets/ec08a5e6-9606-41c5-b03a-1bf47dfeba75)
+![preview](./docs/preview.png)
 
 ## 为什么是它
 
@@ -29,6 +29,8 @@ Copyright (c) 2026 koda
 
 ### 1. 点选即改的元素检查器
 
+![Element inspector](./docs/inspector.png)
+
 不需要再次发起 AI 调用。点选预览里任意元素，右侧浮出检查器面板：
 
 - 标识：`id` / `class`
@@ -42,6 +44,8 @@ Copyright (c) 2026 koda
 
 ### 2. 自定义 Provider，不绑死任何供应商
 
+![Settings drawer](./docs/settings.png)
+
 设置面板里把 OpenAI / Anthropic / Gemini / Kimi 合并成一张卡：
 
 - **Base URL**：留空走官方，可填任何 OpenAI 兼容代理
@@ -52,12 +56,33 @@ Copyright (c) 2026 koda
 
 后端不会回退到任何环境变量 —— 你填什么就跑什么。
 
-### 3. 录屏转代码
+### 3. 国产大模型深度适配
+
+OpenAI / Anthropic / Gemini 之外，**Kimi（Moonshot）是一等公民** —— 不是简单走 OpenAI 兼容层，而是独立 Provider 实现：
+
+| 适配点 | 做了什么 |
+| --- | --- |
+| 专用 Provider | [`backend/agent/providers/kimi.py`](backend/agent/providers/kimi.py) 单独跑 `api.kimi.com/coding` 端点 |
+| 参数约束 | 该端点只接受 `temperature=1`（其它值会被服务端拒绝），请求体里硬编码锁死 |
+| 流式解析 | Kimi 的 tool-call delta 与 OpenAI 略有差异，独立 streaming parser 负责重组 |
+| tool envelope | 显式拼装 `{"type":"function","function":{...}}` 嵌套结构，不丢字段 |
+| 模型枚举 | `Llm.KIMI_FOR_CODING = "kimi-for-coding"` 单独标识，路由不与其他 Kimi 模型串台 |
+| 中文 UI | 设置面板、错误提示、占位符、模型示例、API 文档全链路中文 |
+
+不只是 Kimi —— DeepSeek / Qwen / GLM / 文心 / 智谱 等国产模型只要提供 OpenAI 兼容接口，**填到 Base URL + API Key + 模型标识符就能跑**，后端不做任何特殊处理。
+
+切换模型时工具调用语法、流式增量、function envelope 这些是真正磨时间的地方；针对国产模型的端点约束已经在 Provider 层处理过一遍。
+
+### 4. 录屏转代码
+
+![New project modal](./docs/input.png)
 
 录一段网页交互，自动切帧送进模型，生成对应动效的原型。
 （视频模式当前仅支持 HTML + Tailwind 输出。）
 
-### 4. Mono UI 主题
+### 5. Mono UI 主题
+
+![Light theme home](./docs/preview-light.png)
 
 所有页面统一锌色 + 黑白反转的强调色，无 violet / green 抢眼。
 代码字体用 Geist Mono，匹配代码编辑器风格。
@@ -76,9 +101,10 @@ Copyright (c) 2026 koda
 - **OpenAI** — GPT-5.5, GPT-5.4 Mini
 - **Anthropic** — Claude Opus 4.8, Claude Opus 4.6, Claude Sonnet 4.6
 - **Gemini** — 3.1 Pro Preview, 3 Flash Preview
+- **Kimi / Moonshot** — `kimi-for-coding`（专用 Provider，见上文 §3）
 - **Replicate** — z-image-turbo（图片生成 / 编辑 / 抠图）
 
-实际可用模型取决于你在设置面板填写的 `模型标识符`。
+实际可用模型取决于你在设置面板填写的 `模型标识符` —— DeepSeek / Qwen / GLM / 文心 等 OpenAI 兼容的国产模型同样可以填进来用。
 
 ## 🛠 本地运行
 
@@ -169,7 +195,9 @@ docker-compose up -d --build
 
 ## 致谢
 
-- 原项目：[abi/screenshot-to-code](https://github.com/abi/screenshot-to-code) — 完整的多模态代码生成 pipeline 与所有 prompt / agent 逻辑源自于此。
+本项目得以成立，因为站在一位慷慨的作者肩上：
+
+- **[Abi Raja](https://github.com/abi) / [screenshot-to-code](https://github.com/abi/screenshot-to-code)** — 原作者。完整的多模态代码生成 pipeline、所有 prompt 模板、agent 状态机、multi-frame 视频合成逻辑、流式事件协议、evals 评测框架、provider 抽象层 —— 全部源自这份 MIT 开源工作。本项目在原协议下继续分发，沿用相同的核心架构。
 - 字体：[Geist](https://vercel.com/font) + Geist Mono。
 - UI 组件：[shadcn/ui](https://ui.shadcn.com/) 风格的 Radix 封装。
 
